@@ -2,13 +2,29 @@ import './Home.scss';
 
 import { useState } from 'react'
 import { TextSendBar } from '../../UI/TextSendBar/TextSendBar';
+import { TextBubble } from '../../UI/TextBubble/TextBubble';
 
 
 export const Home = () => {
     const [senderMessage, setSenderMessage] = useState('')
     const [recipientMessage, setRecipientMessage] = useState('')
+
+    const [textsInConversation, setTextsInConversation] = useState([])
+
+    const loadConversation = () => {
+        textsInConversation.map((text, senderTextReturn) => {
+            console.log(text[0])
+            console.log(text[1])
+            return <TextBubble text={text[0]}/>
+        })
+    }
+
+
     const message = (textInput: string, senderTextReturn: boolean) => {
-        senderTextReturn ? setSenderMessage(textInput) : setRecipientMessage(textInput)
+        const tempTextsInConversation: any = textsInConversation
+        tempTextsInConversation.push([textInput, senderTextReturn])
+        setTextsInConversation(tempTextsInConversation)
+        console.log(textsInConversation)
     }
     return(
         <>
@@ -33,10 +49,8 @@ export const Home = () => {
                 <div className='chat-wrapper'>
                     <div className='chat-window'>
                         <h1>
-                            sender: {senderMessage}
-                        </h1>
-                        <h1>
-                            recipient: {recipientMessage}
+                            hi
+                            {loadConversation}
                         </h1>
                     </div>
                 </div>
