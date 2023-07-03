@@ -1,28 +1,27 @@
 import './Home.scss';
 
-import { useState } from 'react'
+import { JSXElementConstructor, useState } from 'react'
 import { TextSendBar } from '../../UI/TextSendBar/TextSendBar';
 import { TextBubble } from '../../UI/TextBubble/TextBubble';
 
 
 export const Home = () => {
-    const [senderMessage, setSenderMessage] = useState('')
-    const [recipientMessage, setRecipientMessage] = useState('')
 
-    const [textsInConversation, setTextsInConversation] = useState([])
+    const [textsInConversation, setTextsInConversation] = useState<any[]>([])
 
     const loadConversation = () => {
-        textsInConversation.map((text, senderTextReturn) => {
-            console.log(text[0])
-            console.log(text[1])
-            return <TextBubble text={text[0]}/>
-        })
+         return (
+            textsInConversation.map((text, senderTextReturn) => {
+            console.log("text[0]:", text[0]);
+            console.log("text[1]:", text[1]);
+            return ( <TextBubble text={text[0]}/>
+         )}))
     }
 
 
     const message = (textInput: string, senderTextReturn: boolean) => {
         const tempTextsInConversation: any = textsInConversation
-        tempTextsInConversation.push([textInput, senderTextReturn])
+        tempTextsInConversation.push({messageId: textsInConversation.length, textInput: textInput, senderTextReturn: senderTextReturn})
         setTextsInConversation(tempTextsInConversation)
         console.log(textsInConversation)
     }
@@ -33,7 +32,7 @@ export const Home = () => {
                 <div className='input-boxes-wrapper'>
                     <div className="sender-wrapper">
                         Sender:
-                        <TextSendBar 
+                        <TextSendBar
                             message={message}
                             senderText={true}
                         />
@@ -50,7 +49,13 @@ export const Home = () => {
                     <div className='chat-window'>
                         <h1>
                             hi
-                            {loadConversation}
+                            {textsInConversation.map((text) =>
+                                <li key={text.messageId}>
+                                    <TextBubble
+                                        text={text.textInput}
+                                    />
+                                </li>
+                                )}
                         </h1>
                     </div>
                 </div>
